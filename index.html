@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Management System - Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+
+    <!-- Left side: intro -->
+    <section class="auth-hero">
+      <h1 data-i18n="app.title">Hospital Management System</h1>
+      <p data-i18n="auth.tagline">Find the right hospital and doctor for your health problem, close to where you are.</p>
+      <ul>
+        <li data-i18n="auth.point1">Search hospitals by state, location and disease</li>
+        <li data-i18n="auth.point2">Compare hospitals by treatment cost, rating and doctors</li>
+        <li data-i18n="auth.point3">Book appointments with a date and time slot</li>
+        <li data-i18n="auth.point4">Patients, doctors and admins each have their own panel</li>
+      </ul>
+    </section>
+
+    <!-- Right side: login / signup -->
+    <section class="auth-panel">
+      <div class="auth-box card">
+        <div class="lang-row"><span id="langSlot"></span></div>
+
+        <div class="tabs">
+          <div class="tab active" id="loginTab" data-i18n="auth.login">Login</div>
+          <div class="tab" id="signupTab" data-i18n="auth.signup">Sign Up</div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- Login form -->
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail" data-i18n="auth.email">Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword" data-i18n="auth.password">Password</label>
+            <input type="password" id="loginPassword" data-i18n-placeholder="auth.enterPassword" placeholder="Enter password" required>
+          </div>
+          <p class="link-row"><a href="#" id="forgotLink" data-i18n="auth.forgot">Forgot password?</a></p>
+          <button type="submit" class="btn btn-block" data-i18n="auth.loginBtn">Login</button>
+          <p class="hint">Demo admin: admin@hms.com / admin123<br>Demo doctor: doctor@hms.com / doctor123<br>Demo patient: patient@hms.com / patient123</p>
+        </form>
+
+        <!-- Forgot password form -->
+        <form id="forgotForm" class="hidden">
+          <h3 data-i18n="auth.resetTitle">Reset your password</h3>
+          <p class="hint" style="margin-bottom:14px;" data-i18n="auth.resetHelp">Enter the email and full name you used to sign up, then choose a new password.</p>
+          <div class="form-group">
+            <label for="forgotEmail" data-i18n="auth.regEmail">Registered Email</label>
+            <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="forgotName" data-i18n="auth.regName">Registered Full Name</label>
+            <input type="text" id="forgotName" data-i18n-placeholder="auth.nameUsed" placeholder="Name used at signup" required>
+          </div>
+          <div class="form-group">
+            <label for="forgotPassword" data-i18n="auth.newPassword">New Password</label>
+            <input type="password" id="forgotPassword" data-i18n-placeholder="auth.min6" placeholder="At least 6 characters" required>
+          </div>
+          <div class="form-group">
+            <label for="forgotConfirm" data-i18n="auth.confirmNew">Confirm New Password</label>
+            <input type="password" id="forgotConfirm" data-i18n-placeholder="auth.reenterNew" placeholder="Re-enter new password" required>
+          </div>
+          <button type="submit" class="btn btn-block" data-i18n="auth.resetBtn">Reset Password</button>
+          <p class="link-row"><a href="#" id="backToLogin" data-i18n="auth.back">Back to login</a></p>
+        </form>
+
+        <!-- Signup form -->
+        <form id="signupForm" class="hidden">
+          <div class="form-group">
+            <label for="signupName" data-i18n="auth.fullName">Full Name</label>
+            <input type="text" id="signupName" data-i18n-placeholder="auth.yourName" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="signupEmail" data-i18n="auth.email">Email</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signupPassword" data-i18n="auth.password">Password</label>
+            <input type="password" id="signupPassword" data-i18n-placeholder="auth.min6" placeholder="At least 6 characters" required>
+          </div>
+          <div class="form-group">
+            <label for="signupConfirm" data-i18n="auth.confirmPassword">Confirm Password</label>
+            <input type="password" id="signupConfirm" data-i18n-placeholder="auth.reenter" placeholder="Re-enter password" required>
+          </div>
+          <div class="form-group">
+            <label for="signupRole" data-i18n="auth.registerAs">Register as</label>
+            <select id="signupRole">
+              <option value="user" data-i18n="auth.rolePatient">Patient (User)</option>
+              <option value="admin" data-i18n="auth.roleAdmin">Hospital Admin</option>
+            </select>
+          </div>
+          <div class="form-group hidden" id="adminCodeGroup">
+            <label for="adminCode" data-i18n="auth.adminCode">Admin Access Code</label>
+            <input type="password" id="adminCode" data-i18n-placeholder="auth.enterCode" placeholder="Enter admin code">
+            <p class="hint">Demo code: ADMIN2026</p>
+          </div>
+          <button type="submit" class="btn btn-block" data-i18n="auth.createBtn">Create Account</button>
+          <p class="hint" data-i18n="auth.doctorNote">Doctors: your hospital admin creates your login.</p>
+        </form>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="common.js"></script>
+  <script src="i18n.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Hospital - Hospital Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">&#10010; <span data-i18n="app.title">Hospital Management System</span></div>
+    <div class="nav-right">
+      <button class="btn btn-emergency btn-small" id="emergencyBtn" data-i18n="nav.emergency">&#128657; Emergency</button>
+      <span id="langSlot"></span>
+      <span id="welcomeText"></span>
+      <button class="btn btn-light btn-small" id="logoutBtn" data-i18n="nav.logout">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Medicine reminders that are due now -->
+    <div id="dueBanner"></div>
+
+    <div class="steps">
+      <span class="step active" id="step1" data-i18n="step.1">1. State, Location &amp; Disease</span>
+      <span class="step" id="step2" data-i18n="step.2">2. Choose Hospital</span>
+      <span class="step" id="step3" data-i18n="step.3">3. Choose Doctor</span>
+      <span class="step" id="step4" data-i18n="step.4">4. Treatment Details</span>
+    </div>
+
+    <!-- Step 1: search -->
+    <section class="card">
+      <h2 data-i18n="search.title">Find a Hospital</h2>
+      <div id="searchMessage" class="message"></div>
+      <form id="searchForm" class="form-grid">
+        <div>
+          <label for="stateSelect" data-i18n="search.state">State</label>
+          <select id="stateSelect" required></select>
+        </div>
+        <div>
+          <label for="locationSelect" data-i18n="search.location">Location</label>
+          <select id="locationSelect" disabled></select>
+        </div>
+        <div>
+          <label for="diseaseInput" data-i18n="search.disease">Disease Name</label>
+          <div class="input-with-btn">
+            <input type="text" id="diseaseInput" list="diseaseList" data-i18n-placeholder="search.diseasePh" placeholder="e.g. Diabetes" required>
+            <button type="button" class="mic-btn" id="micBtn" data-i18n-title="search.voice" title="Speak the disease name">&#127908;</button>
+          </div>
+          <datalist id="diseaseList"></datalist>
+        </div>
+        <div>
+          <label for="budgetInput" data-i18n="search.budget">Maximum budget (&#8377;, optional)</label>
+          <input type="number" id="budgetInput" min="0" step="1" data-i18n-placeholder="search.budgetPh" placeholder="e.g. 20000">
+        </div>
+        <div>
+          <label for="sortSelect" data-i18n="search.sort">Sort by</label>
+          <select id="sortSelect">
+            <option value="relevance" data-i18n="sort.relevance">Best match</option>
+            <option value="cost" data-i18n="sort.cost">Lowest cost</option>
+            <option value="rating" data-i18n="sort.rating">Highest rating</option>
+            <option value="experience" data-i18n="sort.experience">Most experienced doctor</option>
+            <option value="success" data-i18n="sort.success">Best success rate</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-block" data-i18n="search.btn">Search Hospitals</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 2: hospital results -->
+    <section class="card hidden" id="resultsSection">
+      <h2 id="resultsTitle">Hospitals</h2>
+      <div id="compareBar" class="compare-bar hidden">
+        <span id="compareCount"></span>
+        <button type="button" class="btn btn-small" id="compareBtn" data-i18n="compare.btn">Compare selected</button>
+        <button type="button" class="btn btn-light btn-small" id="clearCompare" style="border:1px solid #e2e8f0;" data-i18n="compare.clear">Clear</button>
+      </div>
+      <div id="compareMessage" class="message"></div>
+      <div id="hospitalList" class="card-grid"></div>
+    </section>
+
+    <!-- Side by side comparison -->
+    <section class="card hidden" id="compareSection">
+      <h2 data-i18n="compare.title">Hospital Comparison</h2>
+      <div class="table-wrap" id="compareTable"></div>
+    </section>
+
+    <!-- Step 3: location + doctors of the chosen hospital -->
+    <section class="card hidden" id="doctorSection">
+      <h2 id="doctorTitle">Doctors</h2>
+      <div id="hospitalInfo" class="location-box"></div>
+      <div id="doctorList" class="card-grid"></div>
+    </section>
+
+    <!-- Step 4: treatment details of the chosen doctor -->
+    <section class="card hidden" id="treatmentSection">
+      <h2 data-i18n="treat.title">Treatment Details</h2>
+      <div id="treatmentContent"></div>
+    </section>
+
+    <!-- My appointments -->
+    <section class="card" id="appointmentSection">
+      <h2 data-i18n="appt.title">My Appointments</h2>
+      <div id="appointmentMessage" class="message"></div>
+      <div class="table-wrap" id="appointmentTable"></div>
+    </section>
+
+    <!-- My prescriptions -->
+    <section class="card" id="prescriptionSection">
+      <h2 data-i18n="rx.title">My Prescriptions</h2>
+      <div id="prescriptionList"></div>
+    </section>
+
+    <!-- Medicine reminders -->
+    <section class="card" id="reminderSection">
+      <h2 data-i18n="rem.title">Medicine Reminders</h2>
+      <p class="muted" data-i18n="rem.help">Reminders appear on this page at the chosen time while it is open in your browser.</p>
+      <br>
+      <div id="reminderMessage" class="message"></div>
+      <form id="reminderForm" class="form-grid">
+        <div>
+          <label for="remMedicine" data-i18n="rem.medicine">Medicine</label>
+          <input type="text" id="remMedicine" required>
+        </div>
+        <div>
+          <label for="remTime" data-i18n="rem.time">Time every day</label>
+          <input type="time" id="remTime" value="08:00" required>
+        </div>
+        <div>
+          <label for="remStart" data-i18n="rem.start">Start date</label>
+          <input type="date" id="remStart">
+        </div>
+        <div>
+          <label for="remEnd" data-i18n="rem.end">End date (optional)</label>
+          <input type="date" id="remEnd">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-block" data-i18n="rem.add">Add Reminder</button>
+        </div>
+      </form>
+      <div style="margin:14px 0;">
+        <button type="button" class="btn btn-light btn-small" id="enableNotify" style="border:1px solid #e2e8f0;" data-i18n="rem.enable">Enable browser notifications</button>
+      </div>
+      <div class="table-wrap" id="reminderTable"></div>
+    </section>
+
+  </main>
+
+  <!-- Booking popup -->
+  <div class="modal-bg" id="bookingModal">
+    <div class="modal">
+      <h3 data-i18n="book.title">Book Appointment</h3>
+      <p class="muted" id="bookingInfo"></p>
+      <br>
+      <div id="bookingMessage" class="message"></div>
+      <div class="form-group">
+        <label for="bookingDate" data-i18n="book.date">Choose a date</label>
+        <input type="date" id="bookingDate">
+      </div>
+      <div class="form-group">
+        <label for="bookingTime" data-i18n="book.time">Choose a time slot</label>
+        <select id="bookingTime"></select>
+      </div>
+      <div class="actions">
+        <button class="btn btn-light btn-small" id="cancelBooking" style="border:1px solid #e2e8f0;" data-i18n="common.cancel">Cancel</button>
+        <button class="btn btn-small" id="confirmBooking" data-i18n="common.confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback popup -->
+  <div class="modal-bg" id="feedbackModal">
+    <div class="modal">
+      <h3 data-i18n="fb.title">Rate your treatment</h3>
+      <p class="muted" id="feedbackInfo"></p>
+      <br>
+      <div id="feedbackMessage" class="message"></div>
+      <div class="stars" id="starRow"></div>
+      <div class="form-group">
+        <label for="feedbackComment" data-i18n="fb.comment">Comment (optional)</label>
+        <textarea id="feedbackComment" rows="3"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-light btn-small" id="cancelFeedback" style="border:1px solid #e2e8f0;" data-i18n="common.cancel">Cancel</button>
+        <button class="btn btn-small" id="submitFeedback" data-i18n="fb.submit">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency popup -->
+  <div class="modal-bg" id="emergencyModal">
+    <div class="modal modal-wide">
+      <h3 class="emergency-title" data-i18n="em.title">&#128657; Emergency help</h3>
+      <p class="em-numbers"><span data-i18n="em.national">National numbers:</span>
+        <a href="tel:112">112 <span data-i18n="em.allEmergencies">(all emergencies)</span></a>
+        <a href="tel:108">108 <span data-i18n="em.ambulance">(ambulance)</span></a></p>
+      <div class="form-grid" style="margin:14px 0;">
+        <div>
+          <label for="emState" data-i18n="search.state">State</label>
+          <select id="emState"></select>
+        </div>
+        <div>
+          <label for="emCity" data-i18n="search.location">Location</label>
+          <select id="emCity"></select>
+        </div>
+      </div>
+      <div id="emergencyList"></div>
+      <div class="actions">
+        <button class="btn btn-light btn-small" id="closeEmergency" style="border:1px solid #e2e8f0;" data-i18n="common.close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printed slips and prescriptions are drawn here -->
+  <div id="printArea" class="print-area"></div>
+
+  <script src="common.js"></script>
+  <script src="i18n.js"></script>
+  <script src="user.js"></script>
+</body>
+</html>

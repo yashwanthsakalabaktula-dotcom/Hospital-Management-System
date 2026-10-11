@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Panel - Hospital Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">&#10010; HMS Doctor Panel</div>
+    <div class="nav-right">
+      <span id="welcomeText"></span>
+      <button class="btn btn-light btn-small" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div id="profileBox" class="location-box"></div>
+
+    <!-- Summary numbers -->
+    <div class="stats" id="stats"></div>
+
+    <!-- Appointments -->
+    <section class="card">
+      <h2>My Appointments</h2>
+      <div class="form-grid" style="max-width:320px;margin-bottom:14px;">
+        <div>
+          <label for="statusFilter">Show</label>
+          <select id="statusFilter">
+            <option value="all">All appointments</option>
+            <option value="Booked" selected>Booked (waiting)</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap" id="appointmentTable"></div>
+    </section>
+
+    <!-- Consultation: patient history and prescription -->
+    <section class="card hidden" id="consultCard">
+      <h2>Consultation</h2>
+      <div id="consultInfo" class="location-box"></div>
+
+      <h3>Patient history</h3>
+      <div id="historyBox"></div>
+      <br>
+
+      <h3>Prescription</h3>
+      <div id="rxMessage" class="message"></div>
+      <form id="rxForm">
+        <div class="form-grid">
+          <div>
+            <label for="rxDiagnosis">Diagnosis</label>
+            <input type="text" id="rxDiagnosis" required>
+          </div>
+          <div>
+            <label for="rxFollowUp">Follow-up date (optional)</label>
+            <input type="date" id="rxFollowUp">
+          </div>
+        </div>
+        <h4 style="margin:16px 0 8px;">Medicines</h4>
+        <div id="medRows"></div>
+        <button type="button" class="btn btn-light btn-small" id="addMedRow" style="border:1px solid #e2e8f0;">+ Add medicine</button>
+        <div class="form-group" style="margin-top:14px;">
+          <label for="rxNotes">Notes / advice</label>
+          <textarea id="rxNotes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn">Save prescription and mark completed</button>
+      </form>
+    </section>
+
+    <!-- Prescriptions written by this doctor -->
+    <section class="card">
+      <h2>Prescriptions I have written</h2>
+      <div class="table-wrap" id="prescriptionTable"></div>
+    </section>
+
+  </main>
+
+  <script src="common.js"></script>
+  <script src="doctor.js"></script>
+</body>
+</html>
